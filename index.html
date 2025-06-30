@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fja - Digital Menu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: white;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .hotel-name {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .hotel-label {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            font-weight: 300;
+        }
+        
+        .menu-container {
+            position: relative;
+            margin: 30px 0;
+            min-height: 600px;
+        }
+        
+        .menu-slide {
+            width: 100%;
+        }
+        
+        .menu-content {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .menu-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            max-width: 100%;
+        }
+        
+        .menu-pdf {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+        
+        .pdf-link {
+            padding: 15px;
+            background: #f8f9fa;
+        }
+        
+        .pdf-link a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .error-message {
+            padding: 40px;
+            background: #f8f9fa;
+            color: #666;
+        }
+        
+        .error-message a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .navigation {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .nav-btn {
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background: #34495e;
+        }
+        
+        .nav-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .slide-counter {
+            font-size: 18px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+            color: #95a5a6;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .hotel-name {
+                font-size: 2em;
+            }
+            
+            .hotel-label {
+                font-size: 1em;
+            }
+            
+            .menu-pdf {
+                height: 500px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="hotel-name">fja</h1>
+            <p class="hotel-label">Scan QR and Check Our Menu</p>
+        </div>
+        
+        <div class="menu-container">
+            
+        <div class="menu-slide" id="slide-0" style="display: block;">
+            <div class="menu-content">
+
+                <img src="./menu_1.jpg" alt="Menu 1" class="menu-image" 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="error-message" style="display:none;">
+                    <p>Menu image not available</p>
+                    <a href="./menu_1.jpg" target="_blank">View Menu File</a>
+                </div>
+
+            </div>
+        </div>
+
+        </div>
+        
+        
+        
+        <div class="footer">
+            <p>📱 Mobile-friendly digital menu</p>
+        </div>
+    </div>
+
+    <script>
+        let currentSlideIndex = 0;
+        const totalSlides = 1;
+        
+        function showSlide(index) {
+            // Hide all slides
+            for (let i = 0; i < totalSlides; i++) {
+                const slide = document.getElementById(`slide-${i}`);
+                if (slide) {
+                    slide.style.display = 'none';
+                }
+            }
+            
+            // Show current slide
+            const currentSlide = document.getElementById(`slide-${index}`);
+            if (currentSlide) {
+                currentSlide.style.display = 'block';
+            }
+            
+            // Update counter
+            const currentSlideSpan = document.getElementById('current-slide');
+            if (currentSlideSpan) {
+                currentSlideSpan.textContent = index + 1;
+            }
+            
+            // Update navigation buttons
+            const prevBtn = document.querySelector('.nav-btn:first-child');
+            const nextBtn = document.querySelector('.nav-btn:last-child');
+            
+            if (prevBtn) {
+                prevBtn.disabled = index === 0;
+            }
+            if (nextBtn) {
+                nextBtn.disabled = index === totalSlides - 1;
+            }
+        }
+        
+        function nextSlide() {
+            if (currentSlideIndex < totalSlides - 1) {
+                currentSlideIndex++;
+                showSlide(currentSlideIndex);
+            }
+        }
+        
+        function previousSlide() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                showSlide(currentSlideIndex);
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            showSlide(0);
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (e.key === 'ArrowRight') {
+                nextSlide();
+            }
+        });
+        
+        // Touch/swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        document.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe left - next slide
+                    nextSlide();
+                } else {
+                    // Swipe right - previous slide
+                    previousSlide();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
